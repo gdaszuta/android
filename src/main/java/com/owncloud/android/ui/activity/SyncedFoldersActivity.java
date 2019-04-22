@@ -355,6 +355,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
                 syncedFolder.getLocalPath(),
                 syncedFolder.getRemotePath(),
                 syncedFolder.getWifiOnly(),
+                syncedFolder.getUploadExisting(),
                 syncedFolder.getChargingOnly(),
                 syncedFolder.getSubfolderByDate(),
                 syncedFolder.getAccount(),
@@ -380,6 +381,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
                 syncedFolder.getLocalPath(),
                 syncedFolder.getRemotePath(),
                 syncedFolder.getWifiOnly(),
+                syncedFolder.getUploadExisting(),
                 syncedFolder.getChargingOnly(),
                 syncedFolder.getSubfolderByDate(),
                 syncedFolder.getAccount(),
@@ -404,6 +406,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
                 mediaFolder.absolutePath,
                 getString(R.string.instant_upload_path) + "/" + mediaFolder.folderName,
                 true,
+                false,
                 false,
                 false,
             getAccount().name,
@@ -491,7 +494,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
             case R.id.action_create_custom_folder: {
                 Log.d(TAG, "Show custom folder dialog");
                 SyncedFolderDisplayItem emptyCustomFolder = new SyncedFolderDisplayItem(
-                    SyncedFolder.UNPERSISTED_ID, null, null, true, false,
+                    SyncedFolder.UNPERSISTED_ID, null, null, true, false, false,
                     false, getAccount().name,
                     FileUploader.LOCAL_BEHAVIOUR_FORGET, false, null, MediaFolderType.CUSTOM);
                 onSyncFolderSettingsClick(0, emptyCustomFolder);
@@ -582,7 +585,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
         if (MediaFolderType.CUSTOM.equals(syncedFolder.getType()) && syncedFolder.getId() == UNPERSISTED_ID) {
             SyncedFolderDisplayItem newCustomFolder = new SyncedFolderDisplayItem(
                     SyncedFolder.UNPERSISTED_ID, syncedFolder.getLocalPath(), syncedFolder.getRemotePath(),
-                    syncedFolder.getWifiOnly(), syncedFolder.getChargingOnly(), syncedFolder.getSubfolderByDate(),
+                    syncedFolder.getWifiOnly(), syncedFolder.getUploadExisting(), syncedFolder.getChargingOnly(), syncedFolder.getSubfolderByDate(),
                     syncedFolder.getAccount(), syncedFolder.getUploadAction(), syncedFolder.getEnabled(),
                     new File(syncedFolder.getLocalPath()).getName(), syncedFolder.getType());
             long storedId = mSyncedFolderProvider.storeSyncedFolder(newCustomFolder);
@@ -599,7 +602,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
         } else {
             SyncedFolderDisplayItem item = mAdapter.get(syncedFolder.getSection());
             item = updateSyncedFolderItem(item, syncedFolder.getLocalPath(), syncedFolder.getRemotePath(), syncedFolder
-                    .getWifiOnly(), syncedFolder.getChargingOnly(), syncedFolder.getSubfolderByDate(), syncedFolder
+                    .getWifiOnly(), syncedFolder.getUploadExisting(), syncedFolder.getChargingOnly(), syncedFolder.getSubfolderByDate(), syncedFolder
                     .getUploadAction(), syncedFolder.getEnabled());
 
             if (syncedFolder.getId() == UNPERSISTED_ID) {
@@ -653,6 +656,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
      * @param localPath       the local path
      * @param remotePath      the remote path
      * @param wifiOnly        upload on wifi only
+     * @param uploadExisting  upload existing files
      * @param chargingOnly    upload on charging only
      * @param subfolderByDate created sub folders
      * @param uploadAction    upload action
@@ -663,6 +667,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
                                                            String localPath,
                                                            String remotePath,
                                                            Boolean wifiOnly,
+                                                           Boolean uploadExisting,
                                                            Boolean chargingOnly,
                                                            Boolean subfolderByDate,
                                                            Integer uploadAction,
@@ -670,6 +675,7 @@ public class SyncedFoldersActivity extends FileActivity implements SyncedFolderA
         item.setLocalPath(localPath);
         item.setRemotePath(remotePath);
         item.setWifiOnly(wifiOnly);
+        item.setUploadExisting(uploadExisting);
         item.setChargingOnly(chargingOnly);
         item.setSubfolderByDate(subfolderByDate);
         item.setUploadAction(uploadAction);

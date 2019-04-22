@@ -324,6 +324,8 @@
 
     <string name="auto_upload_on_wifi">Only upload on unmetered Wi-Fi</string>
     <string name="instant_upload_on_charging">Only upload when charging</string>
+    <string name="upload_all_existing">Upload all existing items</string>
+    <string name="prefs_upload_all_existing_summary">Select this option if you want to create complete copy of directory. Be warned, that this could take very long time depending on SD card speed and file count.</string>
     <string name="instant_upload_path">/InstantUpload</string>
     <string name="auto_upload_path">/AutoUpload</string>
     <string name="conflict_title">File conflict</string>

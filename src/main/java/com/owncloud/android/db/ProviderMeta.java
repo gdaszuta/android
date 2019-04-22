@@ -212,6 +212,7 @@ public class ProviderMeta {
         public static final String SYNCED_FOLDER_LOCAL_PATH = "local_path";
         public static final String SYNCED_FOLDER_REMOTE_PATH = "remote_path";
         public static final String SYNCED_FOLDER_WIFI_ONLY = "wifi_only";
+        public static final String SYNCED_FOLDER_UPLOAD_EXISTING = "upload_existing";
         public static final String SYNCED_FOLDER_CHARGING_ONLY = "charging_only";
         public static final String SYNCED_FOLDER_ENABLED = "enabled";
         public static final String SYNCED_FOLDER_TYPE = "type";

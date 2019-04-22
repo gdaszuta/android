@@ -806,6 +806,7 @@ public class FileContentProvider extends ContentProvider {
                        + ProviderTableMeta.SYNCED_FOLDER_LOCAL_PATH + " TEXT, "           // local path
                        + ProviderTableMeta.SYNCED_FOLDER_REMOTE_PATH + " TEXT, "          // remote path
                        + ProviderTableMeta.SYNCED_FOLDER_WIFI_ONLY + " INTEGER, "         // wifi_only
+                       + ProviderTableMeta.SYNCED_FOLDER_UPLOAD_EXISTING + " INTEGER, "   // upload_existing
                        + ProviderTableMeta.SYNCED_FOLDER_CHARGING_ONLY + " INTEGER, "     // charging only
                        + ProviderTableMeta.SYNCED_FOLDER_ENABLED + " INTEGER, "           // enabled
                        + ProviderTableMeta.SYNCED_FOLDER_SUBFOLDER_BY_DATE + " INTEGER, " // subfolder by date
@@ -1914,6 +1915,24 @@ public class FileContentProvider extends ContentProvider {
                 try {
                     db.execSQL(ALTER_TABLE + ProviderTableMeta.FILE_TABLE_NAME +
                                    ADD_COLUMN + ProviderTableMeta.FILE_SHAREES + " TEXT ");
+
+                    upgraded = true;
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+            }
+
+            if (!upgraded) {
+                Log_OC.i(SQL, String.format(Locale.ENGLISH, UPGRADE_VERSION_MSG, oldVersion, newVersion));
+            }
+
+            if (oldVersion < 46 && newVersion >= 46) {
+                Log_OC.i(SQL, "Entering in the #46 add option to upload existing");
+                db.beginTransaction();
+                try {
+                    db.execSQL(ALTER_TABLE + ProviderTableMeta.SYNCED_FOLDERS_TABLE_NAME +
+                                   ADD_COLUMN + ProviderTableMeta.SYNCED_FOLDER_UPLOAD_EXISTING + " INTEGER ");
 
                     upgraded = true;
                     db.setTransactionSuccessful();

@@ -338,6 +338,8 @@ public class SyncedFolderProvider extends Observable {
                     ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_REMOTE_PATH));
             Boolean wifiOnly = cursor.getInt(cursor.getColumnIndex(
                     ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_WIFI_ONLY)) == 1;
+            Boolean uploadExisting = cursor.getInt(cursor.getColumnIndex(
+                    ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_UPLOAD_EXISTING)) == 1;
             Boolean chargingOnly = cursor.getInt(cursor.getColumnIndex(
                     ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_CHARGING_ONLY)) == 1;
             Boolean subfolderByDate = cursor.getInt(cursor.getColumnIndex(
@@ -351,7 +353,7 @@ public class SyncedFolderProvider extends Observable {
             MediaFolderType type = MediaFolderType.getById(cursor.getInt(cursor.getColumnIndex(
                     ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_TYPE)));
 
-            syncedFolder = new SyncedFolder(id, localPath, remotePath, wifiOnly, chargingOnly, subfolderByDate,
+            syncedFolder = new SyncedFolder(id, localPath, remotePath, wifiOnly, uploadExisting, chargingOnly, subfolderByDate,
                     accountName, uploadAction, enabled, type);
         }
         return syncedFolder;
@@ -369,6 +371,7 @@ public class SyncedFolderProvider extends Observable {
         cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_LOCAL_PATH, syncedFolder.getLocalPath());
         cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_REMOTE_PATH, syncedFolder.getRemotePath());
         cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_WIFI_ONLY, syncedFolder.getWifiOnly());
+        cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_UPLOAD_EXISTING, syncedFolder.getUploadExisting());
         cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_CHARGING_ONLY, syncedFolder.getChargingOnly());
         cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_ENABLED, syncedFolder.isEnabled());
         cv.put(ProviderMeta.ProviderTableMeta.SYNCED_FOLDER_SUBFOLDER_BY_DATE, syncedFolder.getSubfolderByDate());

@@ -133,12 +133,14 @@ public final class FilesSyncHelper {
                     String dateInitiated = arbitraryDataProvider.getValue(GLOBAL,
                             syncedFolderInitiatedKey);
 
+                    Boolean uploadExisting = syncedFolder.getUploadExisting();
+
                     Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                         @Override
                         public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
 
                             File file = path.toFile();
-                            if (attrs.lastModifiedTime().toMillis() >= Long.parseLong(dateInitiated) * 1000) {
+                            if (uploadExisting || attrs.lastModifiedTime().toMillis() >= Long.parseLong(dateInitiated) * 1000) {
                                 filesystemDataProvider.storeOrUpdateFileValue(path.toAbsolutePath().toString(),
                                         attrs.lastModifiedTime().toMillis(), file.isDirectory(), syncedFolder);
                             }
@@ -197,6 +199,7 @@ public final class FilesSyncHelper {
 
         String syncedFolderInitiatedKey = SYNCEDFOLDERINITIATED + syncedFolder.getId();
         String dateInitiated = arbitraryDataProvider.getValue(GLOBAL, syncedFolderInitiatedKey);
+        Boolean uploadExisting = syncedFolder.getUploadExisting();
 
         cursor = context.getContentResolver().query(uri, projection, MediaStore.MediaColumns.DATA + " LIKE ?",
                 new String[]{path}, null);
@@ -207,7 +210,7 @@ public final class FilesSyncHelper {
             while (cursor.moveToNext()) {
                 contentPath = cursor.getString(column_index_data);
                 isFolder = new File(contentPath).isDirectory();
-                if (cursor.getLong(column_index_date_modified) >= Long.parseLong(dateInitiated)) {
+                if (uploadExisting || cursor.getLong(column_index_date_modified) >= Long.parseLong(dateInitiated)) {
                     filesystemDataProvider.storeOrUpdateFileValue(contentPath,
                             cursor.getLong(column_index_date_modified), isFolder, syncedFolder);
                 }

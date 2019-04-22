@@ -75,6 +75,7 @@ public class SyncedFolderPreferencesDialogFragment extends DialogFragment {
     private CharSequence[] mUploadBehaviorItemStrings;
     private SwitchCompat mEnabledSwitch;
     private AppCompatCheckBox mUploadOnWifiCheckbox;
+    private AppCompatCheckBox mUploadExistingCheckbox;
     private AppCompatCheckBox mUploadOnChargingCheckbox;
     private AppCompatCheckBox mUploadUseSubfoldersCheckbox;
     private TextView mUploadBehaviorSummary;
@@ -178,6 +179,9 @@ public class SyncedFolderPreferencesDialogFragment extends DialogFragment {
         mUploadOnWifiCheckbox = view.findViewById(R.id.setting_instant_upload_on_wifi_checkbox);
         ThemeUtils.tintCheckbox(mUploadOnWifiCheckbox, accentColor);
 
+        mUploadExistingCheckbox = view.findViewById(R.id.setting_upload_all_existing_checkbox);
+        ThemeUtils.tintCheckbox(mUploadExistingCheckbox, accentColor);
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             view.findViewById(R.id.setting_instant_upload_on_charging_container).setVisibility(View.GONE);
         } else {
@@ -223,6 +227,9 @@ public class SyncedFolderPreferencesDialogFragment extends DialogFragment {
         }
 
         mUploadOnWifiCheckbox.setChecked(mSyncedFolder.getWifiOnly());
+
+        mUploadExistingCheckbox.setChecked(mSyncedFolder.getUploadExisting());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mUploadOnChargingCheckbox.setChecked(mSyncedFolder.getChargingOnly());
         }
@@ -312,6 +319,9 @@ public class SyncedFolderPreferencesDialogFragment extends DialogFragment {
         view.findViewById(R.id.setting_instant_upload_on_wifi_container).setEnabled(enable);
         view.findViewById(R.id.setting_instant_upload_on_wifi_container).setAlpha(alpha);
 
+        view.findViewById(R.id.setting_upload_all_existing_container).setEnabled(enable);
+        view.findViewById(R.id.setting_upload_all_existing_container).setAlpha(alpha);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             view.findViewById(R.id.setting_instant_upload_on_charging_container).setEnabled(enable);
             view.findViewById(R.id.setting_instant_upload_on_charging_container).setAlpha(alpha);
@@ -345,6 +355,15 @@ public class SyncedFolderPreferencesDialogFragment extends DialogFragment {
                     public void onClick(View v) {
                         mSyncedFolder.setWifiOnly(!mSyncedFolder.getWifiOnly());
                         mUploadOnWifiCheckbox.toggle();
+                    }
+                });
+
+        view.findViewById(R.id.setting_upload_all_existing_container).setOnClickListener(
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mSyncedFolder.setUploadExisting(!mSyncedFolder.getUploadExisting());
+                        mUploadExistingCheckbox.toggle();
                     }
                 });
 

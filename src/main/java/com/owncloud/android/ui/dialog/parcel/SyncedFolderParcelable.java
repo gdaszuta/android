@@ -39,6 +39,7 @@ public class SyncedFolderParcelable implements Parcelable {
     private String mRemotePath;
     private Boolean mWifiOnly = false;
     private Boolean mChargingOnly = false;
+    private Boolean mUploadExisting = false;
     private Boolean mEnabled = false;
     private Boolean mSubfolderByDate = false;
     private Integer mUploadAction;
@@ -53,6 +54,7 @@ public class SyncedFolderParcelable implements Parcelable {
         mLocalPath = syncedFolderDisplayItem.getLocalPath();
         mRemotePath = syncedFolderDisplayItem.getRemotePath();
         mWifiOnly = syncedFolderDisplayItem.getWifiOnly();
+        mUploadExisting = syncedFolderDisplayItem.getUploadExisting();
         mChargingOnly = syncedFolderDisplayItem.getChargingOnly();
         mEnabled = syncedFolderDisplayItem.isEnabled();
         mSubfolderByDate = syncedFolderDisplayItem.getSubfolderByDate();
@@ -68,6 +70,7 @@ public class SyncedFolderParcelable implements Parcelable {
         mLocalPath = read.readString();
         mRemotePath = read.readString();
         mWifiOnly = read.readInt()!= 0;
+        mUploadExisting = read.readInt()!= 0;
         mChargingOnly = read.readInt() != 0;
         mEnabled = read.readInt() != 0;
         mSubfolderByDate = read.readInt() != 0;
@@ -84,6 +87,7 @@ public class SyncedFolderParcelable implements Parcelable {
         dest.writeString(mLocalPath);
         dest.writeString(mRemotePath);
         dest.writeInt(mWifiOnly ? 1 : 0);
+        dest.writeInt(mUploadExisting ? 1 : 0);
         dest.writeInt(mChargingOnly ? 1 : 0);
         dest.writeInt(mEnabled ? 1 : 0);
         dest.writeInt(mSubfolderByDate ? 1 : 0);
@@ -142,6 +146,14 @@ public class SyncedFolderParcelable implements Parcelable {
 
     public void setWifiOnly(Boolean mWifiOnly) {
         this.mWifiOnly = mWifiOnly;
+    }
+
+    public Boolean getUploadExisting() {
+        return mUploadExisting;
+    }
+
+    public void setUploadExisting(Boolean mUploadExisting) {
+        this.mUploadExisting = mUploadExisting;
     }
 
     public Boolean getChargingOnly() {
